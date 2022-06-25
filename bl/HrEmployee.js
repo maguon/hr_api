@@ -131,6 +131,7 @@ const deleteHrEmployee = async (req,res,next)=>{
 
 module.exports = {
     uploadHrEmployeeFile,
+    queryHrEmployee,
     addHrEmployee,
     updateHrEmployee,
     updateStatus,

@@ -19,9 +19,12 @@ const uploadHrStudentFile = async (req,res,next)=>{
         for(let i=0;i<objArray.length;i++){
             let subParams = {
                 opUser:params.userId,
-                ksh : objArray[i].考生号,
+                ksh : objArray[i].考号,
+                collegeYear : objArray[i].入学年份,
                 name : objArray[i].姓名,
                 idNum : objArray[i].身份证号,
+                birth: commonUtil.getBirthById(objArray[i].身份证号),
+                gender: commonUtil.getGenderById(objArray[i].身份证号),
                 collegeName : objArray[i].学校,
                 majorName : objArray[i].专业,
                 phones : objArray[i].电话,
@@ -79,10 +82,14 @@ const addHrStudent = async (req,res,next)=>{
 const updateHrStudent = async (req,res,next)=>{
     let params = req.body;
     let path = req.params;
-    if(path.employeeId){
-        params.employeeId = path.employeeId;
+    if(path.studentId){
+        params.studentId = path.studentId;
     }
     try{
+        if(params.idNum&&params.idNum.length==18){
+            params.birth=commonUtil.getBirthById(params.idNum)
+            params.gender=commonUtil.getGenderById(params.idNum)
+        }
         const rows = await hrStudentDAO.updateHrStudent(params);
         logger.info(' updateHrStudent ' + 'success');
         resUtil.resetUpdateRes(res,rows);

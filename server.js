@@ -12,6 +12,7 @@ const user = require('./bl/User');
 const userPerfLevel = require('./bl/UserPerfLevel');
 const userTypeMenu = require('./bl/UserTypeMenu');
 const hrStudent = require('./bl/HrStudent');
+const hrEmployee = require('./bl/HrEmployee');
 const collegeInfo = require('./bl/CollegeInfo');
 
 const createServer=()=>{
@@ -101,11 +102,24 @@ const createServer=()=>{
     server.put({path:'/api/user/:userId/student/:studentId/status',contentType: 'application/json'} ,hrStudent.updateStatus);
     server.del({path:'/api/user/:userId/student/:studentId',contentType: 'application/json'},hrStudent.deleteHrStudent);
     /**
+     * Employee Module
+     */
+
+     server.get('/api/user/:userId/employee', hrEmployee.queryHrEmployee);
+     server.post({path:'/api/user/:userId/employee',contentType: 'application/json'} ,hrEmployee.addHrEmployee);
+     server.post({path:'/api/user/:userId/employeeFile',contentType: 'application/json'}, hrEmployee.uploadHrEmployeeFile);
+     server.put({path:'/api/user/:userId/employee/:employeeId',contentType: 'application/json'} ,hrEmployee.updateHrEmployee);
+     server.put({path:'/api/user/:userId/employee/:employeeId/status',contentType: 'application/json'} ,hrEmployee.updateStatus);
+     server.del({path:'/api/user/:userId/employee/:employeeId',contentType: 'application/json'},hrEmployee.deleteHrEmployee);
+
+    /**
      * College Module
      */
      server.get('/api/user/:userId/college', collegeInfo.queryCollege);
      server.get('/api/user/:userId/collegeLocate', collegeInfo.queryCollegeLocate);
      server.get('/api/user/:userId/collegeDegree', collegeInfo.queryCollegeDegree);
+
+
     server.on('NotFound', function (req, res ,err,next) {
         logger.warn(req.url + " not found");
 

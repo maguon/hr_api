@@ -4,10 +4,11 @@ var logger = serverLogger.createLogger('HrStudentDAO.js');
 
 class HrStudentDAO  {
     static async queryHrStudent(params) {
-        let query = "select * from hr_student where id is not null ";
+        let query = "select hs.*,ci.college_locate,ci.college_owner,ci.college_degree,ci.high_level,ci.has_master " +
+        " from hr_student hs left join college_info ci on hs.college_name = ci.college_name where hs.id is not null ";
         let filterObj = {};
         if(params.id){
-            query += " and id = ${id} ";
+            query += " and hs.id = ${id} ";
             filterObj.id = params.id;
         }
         if(params.ksh){
@@ -26,7 +27,7 @@ class HrStudentDAO  {
             filterObj.collegeLocate = params.collegeLocate;
         } */
         if(params.collegeName){
-            query += " and college_name = ${collegeName} ";
+            query += " and hs.college_name = ${collegeName} ";
             filterObj.collegeName = params.collegeName;
         }
         if(params.marjorName){
@@ -34,7 +35,7 @@ class HrStudentDAO  {
             filterObj.collegeName = params.collegeName;
         }
         if(params.status){
-            query += " and status = ${status} ";
+            query += " and hs.status = ${status} ";
             filterObj.status = params.status;
         }
         query = query + '  order by id desc ';
@@ -90,7 +91,7 @@ class HrStudentDAO  {
             'VALUES ( ${status} , ${ksh} , ${collegeYear} , ${name} , ${idNum} , ${birth} , ${gender} , ${collegeName} , ${majorName} , ${phones}  ' +
             ' ) RETURNING id ';
         let valueObj = {};
-        valueObj.status = params.status;
+        valueObj.status = params.status || 1;
         valueObj.ksh = params.ksh;
         valueObj.collegeYear = params.collegeYear;
         valueObj.name = params.name;
@@ -105,11 +106,15 @@ class HrStudentDAO  {
     }
 
     static async updateHrStudent(params){
-        const query = 'update hr_student set ksh= ${ksh} , name=${name} , college_name=${collegeName} , major_name=${majorName} ,  phones=${phones}  ' +
+        const query = 'update hr_student set ksh= ${ksh} ,college_year=${collegeYear} ,  name=${name} , id_num=${idNum} , birth=${birth} , gender=${gender} ,college_name=${collegeName} , major_name=${majorName} ,  phones=${phones}  ' +
             'where id =${studentId} RETURNING id ';
         let valueObj = {};
-        valueObj.ksh = params.ksh;
+        valueObj.ksh = params.ksh; 
+        valueObj.collegeYear = params.collegeYear;
         valueObj.name = params.name;
+        valueObj.idNum = params.idNum;
+        valueObj.birth = params.birth;
+        valueObj.gender = params.gender;
         valueObj.collegeName = params.collegeName;
         valueObj.majorName = params.majorName;
         valueObj.phones = params.phones;
