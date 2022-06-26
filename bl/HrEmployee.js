@@ -128,6 +128,44 @@ const deleteHrEmployee = async (req,res,next)=>{
         resUtil.resInternalError(e,res,next);
     }
 }
+const queryNation = async (req,res,next)=>{
+    let query = req.query;
+    try{
+        const rows = await hrEmployeeDAO.queryNation(query);
+        logger.info(' queryNation ' + 'success');
+        resUtil.resetQueryRes(res,rows,rows.length);
+        return next();
+    }catch(e){
+        logger.error(" queryNation error",e.stack);
+        resUtil.resInternalError(e,res,next);
+    }
+}
+
+const queryPosName = async (req,res,next)=>{
+    let query = req.query;
+    try{
+        const rows = await hrEmployeeDAO.queryPosName(query);
+        logger.info(' queryPosName ' + 'success');
+        resUtil.resetQueryRes(res,rows,rows.length);
+        return next();
+    }catch(e){
+        logger.error(" queryPosName error",e.stack);
+        resUtil.resInternalError(e,res,next);
+    }
+}
+
+const queryCompanyName = async (req,res,next)=>{
+    let query = req.query;
+    try{
+        const rows = await hrEmployeeDAO.queryCompanyName(query);
+        logger.info(' queryCompanyName ' + 'success');
+        resUtil.resetQueryRes(res,rows,rows.length);
+        return next();
+    }catch(e){
+        logger.error(" queryCompanyName error",e.stack);
+        resUtil.resInternalError(e,res,next);
+    }
+}
 
 module.exports = {
     uploadHrEmployeeFile,
@@ -135,5 +173,8 @@ module.exports = {
     addHrEmployee,
     updateHrEmployee,
     updateStatus,
-    deleteHrEmployee
+    deleteHrEmployee,
+    queryNation,
+    queryPosName,
+    queryCompanyName,
 }

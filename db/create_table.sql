@@ -169,6 +169,7 @@ CREATE TABLE IF NOT EXISTS public.hr_employee
     name character varying(50) NOT NULL,
     phone character varying(20),
     nation character varying(50) NOT NULL,
+    grad_year int,
     college_name character varying(200),
     major_name character varying(200),
     degree character varying(20),
@@ -182,6 +183,7 @@ CREATE TABLE IF NOT EXISTS public.hr_employee
 COMMENT ON COLUMN public.hr_employee.remark IS '备注';
 COMMENT ON COLUMN public.hr_employee.id_num IS '身份证号';
 COMMENT ON COLUMN public.hr_employee.nation IS '民族';
+COMMENT ON COLUMN public.hr_employee.grad_year IS '毕业年份';
 COMMENT ON COLUMN public.hr_employee.company_type IS '单位性质';
 COMMENT ON COLUMN public.hr_employee.pos_name IS '职位名称';
 COMMENT ON COLUMN public.hr_employee.pos_type IS '职称';

@@ -14,6 +14,10 @@ class HrEmployeeDAO  {
             query += " and id_num = ${idNum} ";
             filterObj.idNum = params.idNum;
         }
+        if(params.gradYear){
+            query += " and grad_year = ${gradYear} ";
+            filterObj.gradYear = params.gradYear;
+        }
         if(params.collegeName){
             query += " and college_name = ${collegeName} ";
             filterObj.collegeName = params.collegeName;
@@ -70,6 +74,10 @@ class HrEmployeeDAO  {
             query += " and id_num = ${idNum} ";
             filterObj.idNum = params.idNum;
         }
+        if(params.gradYear){
+            query += " and grad_year = ${gradYear} ";
+            filterObj.gradYear = params.gradYear;
+        }
         if(params.collegeName){
             query += " and college_name = ${collegeName} ";
             filterObj.collegeName = params.collegeName;
@@ -106,33 +114,98 @@ class HrEmployeeDAO  {
         return await pgDb.one(query,filterObj);
     }
 
+    static async queryNation(params) {
+        let query = "select distinct(nation) from hr_employee where id is not null ";
+        let filterObj = {};
+        if(params.status){
+            query += " and status = ${status} ";
+            filterObj.status = params.status;
+        }
+        logger.debug(' queryNation ');
+        return await pgDb.any(query,filterObj);
+    }
+
+    static async queryCompanyName(params) {
+        let query = "select distinct(company_name) from hr_employee where id is not null ";
+        let filterObj = {};
+        if(params.status){
+            query += " and status = ${status} ";
+            filterObj.status = params.status;
+        }
+        if(params.companyType){
+            query += " and company_type = ${companyType} ";
+            filterObj.companyType = params.companyType;
+        }
+        logger.debug(' queryCompanyName ');
+        return await pgDb.any(query,filterObj);
+    }
+
+    static async queryPosName(params) {
+        let query = "select distinct(pos_name) from hr_employee where id is not null ";
+        let filterObj = {};
+        if(params.status){
+            query += " and status = ${status} ";
+            filterObj.status = params.status;
+        }
+        if(params.posType){
+            query += " and pos_type = ${posType} ";
+            filterObj.posType = params.posType;
+        }
+        logger.debug(' queryPosName ');
+        return await pgDb.any(query,filterObj);
+    }
+
     static async addHrEmployee(params) {
-        const query = 'INSERT INTO hr_employee ( status , ksh , name , college_name , major_name , phones ) ' +
-            'VALUES ( ${status} , ${ksh} , ${name} , ${collegeName} , ${majorName} , ${phones}  ' +
+        const query = 'INSERT INTO hr_employee ( status , phone , name , id_num , birth , gender, nation , grad_year , college_name , major_name , degree ,company_type , company_name , pos_type , pos_name , remark ) ' +
+            'VALUES ( ${status} , ${phone} , ${name} ,  ${idNum} , ${birth} , ${gender} , ${nation} , ${gradYear} , ${collegeName} , ${majorName} , ${degree} , ${companyType} , ${companyName} , ${posType} , ${posName} ,${remark}  ' +
             ' ) RETURNING id ';
         let valueObj = {};
         valueObj.status = params.status;
-        valueObj.appType = params.name;
-        valueObj.deviceType = params.collegeName;
-        valueObj.version = params.majorName;
-        valueObj.versionNum = params.phones;
+        valueObj.phone = params.phone;
+        valueObj.name = params.name;
+        valueObj.idNum = params.idNum;
+        valueObj.birth = params.birth;
+        valueObj.gender = params.gender;
+        valueObj.nation = params.nation;
+        valueObj.gradYear = params.gradYear;
+        valueObj.collegeName = params.collegeName;
+        valueObj.majorName = params.majorName;
+        valueObj.degree = params.degree;
+        valueObj.companyType = params.companyType;
+        valueObj.companyName = params.companyName;
+        valueObj.posType = params.posType;
+        valueObj.posName = params.posName;
+        valueObj.remark = params.remark;
         logger.debug(' addHrEmployee ');
         return await pgDb.any(query,valueObj);
     }
 
     static async updateHrEmployee(params){
-        const query = 'update hr_employee set ksh= ${ksh} , name=${name} , college_name=${collegeName} , major_name=${majorName} ,  phones=${phones}  ' +
+        const query = 'update hr_employee set phone= ${phone} , name=${name} , id_num=${idNum} , birth=${birth} , gender=${gender} , nation=${nation} , grad_year=${gradYear} ,'+
+        ' college_name=${collegeName} , major_name=${majorName} ,  degree=${degree} , company_name=${companyName} , companyType=${companyType} , posType=${posType} ,posName=${posName} , phones=${phones}  ' +
             'where id =${employeeId} RETURNING id ';
         let valueObj = {};
-        valueObj.ksh = params.ksh;
+        valueObj.phone = params.phone;
         valueObj.name = params.name;
+        valueObj.idNum = params.idNum;
+        valueObj.birth = params.birth;
+        valueObj.gender = params.gender;
+        valueObj.nation = params.nation;
+        valueObj.gradYear = params.gradYear;
         valueObj.collegeName = params.collegeName;
         valueObj.majorName = params.majorName;
-        valueObj.phones = params.phones;
+        valueObj.degree = params.degree;
+        valueObj.companyType = params.companyType;
+        valueObj.companyName = params.companyName;
+        valueObj.posType = params.posType;
+        valueObj.posName = params.posName;
+        valueObj.remark = params.remark;
         valueObj.employeeId = params.employeeId;
         logger.debug(' updateHrEmployee ');
         return await pgDb.any(query,valueObj);
     }
+
+
 
     static async updateHrEmployeeStatus(params){
         const query = 'update hr_employee set status=${status} ' +

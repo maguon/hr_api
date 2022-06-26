@@ -111,6 +111,9 @@ const createServer=()=>{
      server.put({path:'/api/user/:userId/employee/:employeeId',contentType: 'application/json'} ,hrEmployee.updateHrEmployee);
      server.put({path:'/api/user/:userId/employee/:employeeId/status',contentType: 'application/json'} ,hrEmployee.updateStatus);
      server.del({path:'/api/user/:userId/employee/:employeeId',contentType: 'application/json'},hrEmployee.deleteHrEmployee);
+     server.get('/api/user/:userId/companyName', hrEmployee.queryCompanyName);
+     server.get('/api/user/:userId/posName', hrEmployee.queryPosName);
+     server.get('/api/user/:userId/nation', hrEmployee.queryNation);
 
     /**
      * College Module
