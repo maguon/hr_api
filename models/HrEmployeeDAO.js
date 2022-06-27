@@ -156,11 +156,10 @@ class HrEmployeeDAO  {
     }
 
     static async addHrEmployee(params) {
-        const query = 'INSERT INTO hr_employee ( status , phone , name , id_num , birth , gender, nation , grad_year , college_name , major_name , degree ,company_type , company_name , pos_type , pos_name , remark ) ' +
-            'VALUES ( ${status} , ${phone} , ${name} ,  ${idNum} , ${birth} , ${gender} , ${nation} , ${gradYear} , ${collegeName} , ${majorName} , ${degree} , ${companyType} , ${companyName} , ${posType} , ${posName} ,${remark}  ' +
+        const query = 'INSERT INTO hr_employee (  phone , name , id_num , birth , gender, nation , grad_year , college_name , major_name , degree ,company_type , company_name , pos_type , pos_name , remark ) ' +
+            'VALUES (  ${phone} , ${name} ,  ${idNum} , ${birth} , ${gender} , ${nation} , ${gradYear} , ${collegeName} , ${majorName} , ${degree} , ${companyType} , ${companyName} , ${posType} , ${posName} ,${remark}  ' +
             ' ) RETURNING id ';
         let valueObj = {};
-        valueObj.status = params.status;
         valueObj.phone = params.phone;
         valueObj.name = params.name;
         valueObj.idNum = params.idNum;
@@ -182,7 +181,7 @@ class HrEmployeeDAO  {
 
     static async updateHrEmployee(params){
         const query = 'update hr_employee set phone= ${phone} , name=${name} , id_num=${idNum} , birth=${birth} , gender=${gender} , nation=${nation} , grad_year=${gradYear} ,'+
-        ' college_name=${collegeName} , major_name=${majorName} ,  degree=${degree} , company_name=${companyName} , companyType=${companyType} , posType=${posType} ,posName=${posName} , phones=${phones}  ' +
+        ' college_name=${collegeName} , major_name=${majorName} ,  degree=${degree} , company_name=${companyName} , company_type=${companyType} , pos_type=${posType} ,pos_name=${posName} , remark=${remark}  ' +
             'where id =${employeeId} RETURNING id ';
         let valueObj = {};
         valueObj.phone = params.phone;
@@ -223,6 +222,41 @@ class HrEmployeeDAO  {
         valueObj.employeeId =params.employeeId;
         logger.debug(' deleteHrEmployee ');
         return await pgDb.any(query,valueObj);
+    }
+
+    static async getEmployeeCountByComType(params){
+        const query = 'select company_type,count(id) employee_count from hr_employee group by company_type order by company_type ';
+        let filterObj = {};
+        logger.debug(' getEmployeeCountByComType ');
+        return await pgDb.any(query,filterObj);
+    }
+
+    static async getEmployeeCountByPosType(params){
+        const query = 'select pos_type,count(id) employee_count from hr_employee group by pos_type order by pos_type ';
+        let filterObj = {};
+        logger.debug(' getEmployeeCountByPosType ');
+        return await pgDb.any(query,filterObj);
+    }
+
+    static async getEmployeeCountByDegree(params){
+        const query = 'select degree,count(id) employee_count from hr_employee group by degree  order by degree';
+        let filterObj = {};
+        logger.debug(' getEmployeeCountByDegree ');
+        return await pgDb.any(query,filterObj);
+    }
+
+    static async getEmployeeCountByYear(params){
+        const query = 'select grad_year,count(id) employee_count from hr_employee group by grad_year order by grad_year ';
+        let filterObj = {};
+        logger.debug(' getEmployeeCountByYear ');
+        return await pgDb.any(query,filterObj);
+    }
+
+    static async getEmployeeCountByGender(params){
+        const query = 'select gender,count(id) employee_count from hr_employee group by gender  ';
+        let filterObj = {};
+        logger.debug(' getEmployeeCountByGender ');
+        return await pgDb.any(query,filterObj);
     }
 }
 

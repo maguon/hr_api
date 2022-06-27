@@ -4,6 +4,7 @@ const hrEmployeeDAO = require('../models/HrEmployeeDAO.js');
 const serverLogger = require('../util/ServerLogger.js');
 const sysConst = require('../util/SystemConst.js');
 const resUtil = require('../util/ResponseUtil.js');
+const commonUtil = require('../util/CommonUtil.js');
 const logger = serverLogger.createLogger('HrEmployee.js');
 
 const uploadHrEmployeeFile = async (req,res,next)=>{
@@ -20,15 +21,18 @@ const uploadHrEmployeeFile = async (req,res,next)=>{
                 opUser:params.userId,
                 name : objArray[i].姓名,
                 idNum : objArray[i].身份证号,
+                birth: commonUtil.getBirthById(objArray[i].身份证号),
+                gender: commonUtil.getGenderById(objArray[i].身份证号),
                 phone : objArray[i].电话,
                 nation : objArray[i].民族,
                 degree : objArray[i].学位,
+                gradYear : objArray[i].毕业年份,
                 collegeName : objArray[i].学校,
                 majorName : objArray[i].专业,
                 companyName : objArray[i].单位,
-                companyType : objArray[i].单位性质,
-                companyName : objArray[i].职称,
-                companyType : objArray[i].职称层级,
+                companyType : commonUtil.getJsonLabel(sysConst.COMPANY_TYPE,objArray[i].单位性质),
+                posName : objArray[i].职称,
+                posType : commonUtil.getJsonLabel(sysConst.POS_TYPE,objArray[i].职称层级),
                 remark : objArray[i].备注,
             }
             const rows = await hrEmployeeDAO.addHrEmployee(subParams);
@@ -67,6 +71,10 @@ const addHrEmployee = async (req,res,next)=>{
     let params = req.body;
     params.status = sysConst.status.usable;
     try{
+        if(params.idNum&&params.idNum.length==18){
+            params.birth=commonUtil.getBirthById(params.idNum)
+            params.gender=commonUtil.getGenderById(params.idNum)
+        }
         const rows = await hrEmployeeDAO.addHrEmployee(params);
         logger.info(' addHrEmployee ' + 'success');
         resUtil.resetCreateRes(res,rows);
@@ -84,6 +92,10 @@ const updateHrEmployee = async (req,res,next)=>{
         params.employeeId = path.employeeId;
     }
     try{
+        if(params.idNum&&params.idNum.length==18){
+            params.birth=commonUtil.getBirthById(params.idNum)
+            params.gender=commonUtil.getGenderById(params.idNum)
+        }
         const rows = await hrEmployeeDAO.updateHrEmployee(params);
         logger.info(' updateHrEmployee ' + 'success');
         resUtil.resetUpdateRes(res,rows);
@@ -167,6 +179,72 @@ const queryCompanyName = async (req,res,next)=>{
     }
 }
 
+const getEmployeeCountByComType = async (req,res,next)=>{
+    let query = req.query;
+    try{
+        const rows = await hrEmployeeDAO.getEmployeeCountByComType(query);
+        logger.info(' getEmployeeCountByComType ' + 'success');
+        resUtil.resetQueryRes(res,rows,rows.length);
+        return next();
+    }catch(e){
+        logger.error(" getEmployeeCountByComType error",e.stack);
+        resUtil.resInternalError(e,res,next);
+    }
+}
+
+const getEmployeeCountByPosType = async (req,res,next)=>{
+    let query = req.query;
+    try{
+        const rows = await hrEmployeeDAO.getEmployeeCountByPosType(query);
+        logger.info(' getEmployeeCountByPosType ' + 'success');
+        resUtil.resetQueryRes(res,rows,rows.length);
+        return next();
+    }catch(e){
+        logger.error(" getEmployeeCountByPosType error",e.stack);
+        resUtil.resInternalError(e,res,next);
+    }
+}
+
+const getEmployeeCountByGender = async (req,res,next)=>{
+    let query = req.query;
+    try{
+        const rows = await hrEmployeeDAO.getEmployeeCountByGender(query);
+        logger.info(' getEmployeeCountByGender ' + 'success');
+        resUtil.resetQueryRes(res,rows,rows.length);
+        return next();
+    }catch(e){
+        logger.error(" getEmployeeCountByGender error",e.stack);
+        resUtil.resInternalError(e,res,next);
+    }
+}
+
+const getEmployeeCountByDegree = async (req,res,next)=>{
+    let query = req.query;
+    try{
+        const rows = await hrEmployeeDAO.getEmployeeCountByDegree(query);
+        logger.info(' getEmployeeCountByDegree ' + 'success');
+        resUtil.resetQueryRes(res,rows,rows.length);
+        return next();
+    }catch(e){
+        logger.error(" getEmployeeCountByDegree error",e.stack);
+        resUtil.resInternalError(e,res,next);
+    }
+}
+
+const getEmployeeCountByYear = async (req,res,next)=>{
+    let query = req.query;
+    try{
+        const rows = await hrEmployeeDAO.getEmployeeCountByYear(query);
+        logger.info(' getEmployeeCountByYear ' + 'success');
+        resUtil.resetQueryRes(res,rows,rows.length);
+        return next();
+    }catch(e){
+        logger.error(" getEmployeeCountByYear error",e.stack);
+        resUtil.resInternalError(e,res,next);
+    }
+}
+
+
 module.exports = {
     uploadHrEmployeeFile,
     queryHrEmployee,
@@ -177,4 +255,9 @@ module.exports = {
     queryNation,
     queryPosName,
     queryCompanyName,
+    getEmployeeCountByComType,
+    getEmployeeCountByPosType,
+    getEmployeeCountByGender,
+    getEmployeeCountByDegree,
+    getEmployeeCountByYear
 }

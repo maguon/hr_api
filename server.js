@@ -114,6 +114,11 @@ const createServer=()=>{
      server.get('/api/user/:userId/companyName', hrEmployee.queryCompanyName);
      server.get('/api/user/:userId/posName', hrEmployee.queryPosName);
      server.get('/api/user/:userId/nation', hrEmployee.queryNation);
+     server.get('/api/user/:userId/employeeComTypeStat', hrEmployee.getEmployeeCountByComType);
+     server.get('/api/user/:userId/employeePosTypeStat', hrEmployee.getEmployeeCountByPosType);
+     server.get('/api/user/:userId/employeeDegreeStat', hrEmployee.getEmployeeCountByDegree);
+     server.get('/api/user/:userId/employeeYearStat', hrEmployee.getEmployeeCountByYear);
+     server.get('/api/user/:userId/employeeGenderStat', hrEmployee.getEmployeeCountByGender);
 
     /**
      * College Module
