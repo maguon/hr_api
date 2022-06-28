@@ -135,11 +135,40 @@ const deleteHrStudent = async (req,res,next)=>{
     }
 }
 
+
+const getStudentCountByGender = async (req,res,next)=>{
+    let query = req.query;
+    try{
+        const rows = await hrStudentDAO.getStudentCountByGender(query);
+        logger.info(' getStudentCountByGender ' + 'success');
+        resUtil.resetQueryRes(res,rows,rows.length);
+        return next();
+    }catch(e){
+        logger.error(" getStudentCountByGender error",e.stack);
+        resUtil.resInternalError(e,res,next);
+    }
+}
+
+const getStudentCountByYear = async (req,res,next)=>{
+    let query = req.query;
+    try{
+        const rows = await hrStudentDAO.getStudentCountByYear(query);
+        logger.info(' getStudentCountByYear ' + 'success');
+        resUtil.resetQueryRes(res,rows,rows.length);
+        return next();
+    }catch(e){
+        logger.error(" getStudentCountByYear error",e.stack);
+        resUtil.resInternalError(e,res,next);
+    }
+}
+
 module.exports = {
     uploadHrStudentFile,
     queryHrStudent,
     addHrStudent,
     updateHrStudent,
     updateStatus,
-    deleteHrStudent
+    deleteHrStudent,
+    getStudentCountByGender,
+    getStudentCountByYear,
 }

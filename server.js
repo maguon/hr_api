@@ -101,6 +101,9 @@ const createServer=()=>{
     server.put({path:'/api/user/:userId/student/:studentId',contentType: 'application/json'} ,hrStudent.updateHrStudent);
     server.put({path:'/api/user/:userId/student/:studentId/status',contentType: 'application/json'} ,hrStudent.updateStatus);
     server.del({path:'/api/user/:userId/student/:studentId',contentType: 'application/json'},hrStudent.deleteHrStudent);
+    server.get('/api/user/:userId/studentGenderStat', hrStudent.getStudentCountByGender);
+    server.get('/api/user/:userId/studentYearStat', hrStudent.getStudentCountByYear);
+    
     /**
      * Employee Module
      */

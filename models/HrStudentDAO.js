@@ -140,6 +140,20 @@ class HrStudentDAO  {
         logger.debug(' deleteHrStudent ');
         return await pgDb.any(query,valueObj);
     }
+
+    static async getStudentCountByYear(params){
+        const query = 'select college_year,count(id) student_count from hr_student group by college_year  order by college_year desc';
+        let filterObj = {};
+        logger.debug(' getStudentCountByYear ');
+        return await pgDb.any(query,filterObj);
+    }
+
+    static async getStudentCountByGender(params){
+        const query = 'select gender,count(id) student_count from hr_student group by gender';
+        let filterObj = {};
+        logger.debug(' getStudentCountByGender ');
+        return await pgDb.any(query,filterObj);
+    }
 }
 
 module.exports = HrStudentDAO;
