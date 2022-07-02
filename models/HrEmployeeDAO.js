@@ -166,7 +166,7 @@ class HrEmployeeDAO  {
         valueObj.birth = params.birth;
         valueObj.gender = params.gender;
         valueObj.nation = params.nation;
-        if(params.gradYear==''&&params.gradYear!=null){
+        if(params.gradYear!=''&&params.gradYear!=null){
             valueObj.gradYear = params.gradYear;
         }  
         valueObj.collegeName = params.collegeName;
@@ -177,6 +177,7 @@ class HrEmployeeDAO  {
         valueObj.posType = params.posType;
         valueObj.posName = params.posName;
         valueObj.remark = params.remark;
+        console.log('valueObj')
         logger.debug(' addHrEmployee ');
         return await pgDb.any(query,valueObj);
     }
