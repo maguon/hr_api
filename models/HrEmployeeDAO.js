@@ -202,6 +202,7 @@ class HrEmployeeDAO  {
         valueObj.posName = params.posName;
         valueObj.remark = params.remark;
         valueObj.employeeId = params.employeeId;
+        console.log(valueObj)
         logger.debug(' updateHrEmployee ');
         return await pgDb.any(query,valueObj);
     }
