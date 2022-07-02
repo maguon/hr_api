@@ -190,7 +190,9 @@ class HrEmployeeDAO  {
         valueObj.birth = params.birth;
         valueObj.gender = params.gender;
         valueObj.nation = params.nation;
-        valueObj.gradYear = params.gradYear==''?null:params.gradYear;
+        if(params.gradYear==''&&params.gradYear!=null){
+            valueObj.gradYear = params.gradYear;
+        }        
         valueObj.collegeName = params.collegeName;
         valueObj.majorName = params.majorName;
         valueObj.degree = params.degree;
