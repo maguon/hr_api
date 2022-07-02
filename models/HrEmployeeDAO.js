@@ -6,6 +6,7 @@ class HrEmployeeDAO  {
     static async queryHrEmployee(params) {
         let query = "select * from hr_employee where id is not null ";
         let filterObj = {};
+        console.log(params);
         if(params.id){
             query += " and id = ${employeeId} ";
             filterObj.employeeId = params.employeeId;
@@ -13,6 +14,22 @@ class HrEmployeeDAO  {
         if(params.idNum){
             query += " and id_num = ${idNum} ";
             filterObj.idNum = params.idNum;
+        }
+        if(params.name){
+            query += " and name like '%" + params.name+ "%' ";
+            filterObj.name = params.name;
+        }
+        if(params.phone){
+            query += " and phone =${phone} ";
+            filterObj.phone = params.phone;
+        }
+        if(params.gender){
+            query += " and gender =${gender} ";
+            filterObj.gender = params.gender;
+        }
+        if(params.nation){
+            query += " and nation =${nation} ";
+            filterObj.nation = params.nation;
         }
         if(params.gradYear){
             query += " and grad_year = ${gradYear} ";

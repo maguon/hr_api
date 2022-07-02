@@ -18,27 +18,35 @@ class HrStudentDAO  {
         if(params.name){
             query += " and name like '%" + params.name+ "%' ";
         }
+        if(params.gender){
+            query += " and gender =${gender} ";
+            filterObj.gender = params.gender;
+        }
         if(params.collegeYear){
             query += " and college_year = ${collegeYear} ";
             filterObj.collegeYear = params.collegeYear;
         }
-        /* if(params.collegeLocate){
-            query += " and college_locate = ${collegeLocate} ";
+        if(params.collegeLocate){
+            query += " and hs.college_locate = ${collegeLocate} ";
             filterObj.collegeLocate = params.collegeLocate;
-        } */
+        }
+        if(params.highLevel){
+            query += " and ci.high_level = ${highLevel} ";
+            filterObj.highLevel = params.highLevel;
+        }
         if(params.collegeName){
             query += " and hs.college_name = ${collegeName} ";
             filterObj.collegeName = params.collegeName;
         }
         if(params.marjorName){
-            query += " and marjor_name = ${marjorName} ";
+            query += " and hs.marjor_name = ${marjorName} ";
             filterObj.collegeName = params.collegeName;
         }
         if(params.status){
             query += " and hs.status = ${status} ";
             filterObj.status = params.status;
         }
-        query = query + '  order by id desc ';
+        query = query + '  order by hs.id desc ';
         if(params.start){
             query += " offset ${start} ";
             filterObj.start = params.start;
@@ -52,36 +60,48 @@ class HrStudentDAO  {
     }
 
     static async queryHrStudentCount(params) {
-        let query = "select count(id) from hr_student where id is not null ";
+        let query = "select count(hs.id) from hr_student hs left join college_info ci on hs.college_name = ci.college_name  where hs.id is not null ";
         let filterObj = {};
         if(params.id){
-            query += " and id = ${id} ";
+            query += " and hs.id = ${id} ";
             filterObj.id = params.id;
         }
         if(params.ksh){
             query += " and ksh = ${ksh} ";
             filterObj.ksh = params.ksh;
         }
-        /* if(params.collegeLocate){
-            query += " and college_locate = ${collegeLocate} ";
+        if(params.name){
+            query += " and name like '%" + params.name+ "%' ";
+        }
+        if(params.gender){
+            query += " and gender =${gender} ";
+            filterObj.gender = params.gender;
+        }
+        if(params.collegeYear){
+            query += " and college_year = ${collegeYear} ";
+            filterObj.collegeYear = params.collegeYear;
+        }
+        if(params.collegeLocate){
+            query += " and hs.college_locate = ${collegeLocate} ";
             filterObj.collegeLocate = params.collegeLocate;
-        } */
+        }
+        if(params.highLevel){
+            query += " and ci.high_level = ${highLevel} ";
+            filterObj.highLevel = params.highLevel;
+        }
         if(params.collegeName){
-            query += " and college_name = ${collegeName} ";
+            query += " and hs.college_name = ${collegeName} ";
             filterObj.collegeName = params.collegeName;
         }
         if(params.marjorName){
-            query += " and marjor_name = ${marjorName} ";
-            filterObj.marjorName = params.marjorName;
+            query += " and hs.marjor_name = ${marjorName} ";
+            filterObj.collegeName = params.collegeName;
         }
         if(params.status){
-            query += " and status = ${status} ";
+            query += " and hs.status = ${status} ";
             filterObj.status = params.status;
         }
-        if(params.status){
-            query += " and status = ${status} ";
-            filterObj.status = params.status;
-        }
+        
         logger.debug(' queryHrBaseCount ');
         return await pgDb.one(query,filterObj);
     }
