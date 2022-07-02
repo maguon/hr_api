@@ -134,7 +134,7 @@ select setval(' user_type_menu_id_seq',1000,false);
 --CREATE TABLE hr_student
 CREATE TABLE IF NOT EXISTS public.hr_student
 (
-    id smallserial NOT NULL,
+    id int NOT NULL,
     created_on timestamp with time zone NOT NULL DEFAULT NOW(),
     updated_on timestamp with time zone NOT NULL DEFAULT NOW(),
     status smallint NOT NULL DEFAULT 1,
@@ -159,7 +159,7 @@ select setval(' hr_student_id_seq',1000,false);
 --CREATE TABLE hr_employee
 CREATE TABLE IF NOT EXISTS public.hr_employee
 (
-    id smallserial NOT NULL,
+    id int NOT NULL,
     created_on timestamp with time zone NOT NULL DEFAULT NOW(),
     updated_on timestamp with time zone NOT NULL DEFAULT NOW(),
     status smallint NOT NULL DEFAULT 1,
@@ -210,7 +210,7 @@ CREATE TABLE IF NOT EXISTS public.college_info
 COMMENT ON COLUMN public.college_info.college_locate IS '所在地';
 COMMENT ON COLUMN public.college_info.college_owner IS '主管部门';
 COMMENT ON COLUMN public.college_info.college_degree IS '学历层次';
-COMMENT ON COLUMN public.college_info.high_college IS '双一流';
+COMMENT ON COLUMN public.college_info.high_level IS '双一流';
 COMMENT ON COLUMN public.college_info.has_master IS '研究生院';
 
 DROP TRIGGER IF EXISTS college_info_upt ON college_info;
