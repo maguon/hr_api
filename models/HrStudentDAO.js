@@ -27,7 +27,7 @@ class HrStudentDAO  {
             filterObj.collegeYear = params.collegeYear;
         }
         if(params.collegeLocate){
-            query += " and hs.college_locate = ${collegeLocate} ";
+            query += " and ci.college_locate = ${collegeLocate} ";
             filterObj.collegeLocate = params.collegeLocate;
         }
         if(params.highLevel){
@@ -82,7 +82,7 @@ class HrStudentDAO  {
             filterObj.collegeYear = params.collegeYear;
         }
         if(params.collegeLocate){
-            query += " and hs.college_locate = ${collegeLocate} ";
+            query += " and ci.college_locate = ${collegeLocate} ";
             filterObj.collegeLocate = params.collegeLocate;
         }
         if(params.highLevel){
